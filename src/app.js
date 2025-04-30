@@ -8,7 +8,7 @@ const PostRoutes = require("./modules/post/post.route")
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000", // Change to your frontend URL in production
+    origin: ["http://localhost:3000", "https://blography-client.vercel.app"], // Change to your frontend URL in production
     credentials: true, // Allows cookies to be sent with requests
   })
 );
