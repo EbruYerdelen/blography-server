@@ -4,6 +4,23 @@ const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const AuthRoutes = require("./modules/auth/auth.route")
 const PostRoutes = require("./modules/post/post.route")
+const cron = require("node-cron");
+const axios = require("axios");
+
+app.get("/hello", (req, res) => {
+  res.status(200).json({ status: "running" });
+});
+
+const serverUrl = process.env.SERVER_URL || "http://localhost:4000";
+cron.schedule("*/10 * * * *", async () => {
+  try {
+    const response = await axios.get(`${serverUrl}/hello`);
+    console.log("Cron job executed:", response.data);
+  } catch (error) {
+    console.error("Cron job failed:", error.message);
+  }
+});
+
 
 const app = express();
 app.use(
@@ -16,6 +33,7 @@ app.use(
 app.use(express.json());
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }));
+
 
 
 
