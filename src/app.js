@@ -7,19 +7,7 @@ const PostRoutes = require("./modules/post/post.route")
 const cron = require("node-cron");
 const axios = require("axios");
 
-app.get("/hello", (req, res) => {
-  res.status(200).json({ status: "running" });
-});
 
-const serverUrl = process.env.SERVER_URL || "http://localhost:4000";
-cron.schedule("*/10 * * * *", async () => {
-  try {
-    const response = await axios.get(`${serverUrl}/hello`);
-    console.log("Cron job executed:", response.data);
-  } catch (error) {
-    console.error("Cron job failed:", error.message);
-  }
-});
 
 
 const app = express();
@@ -44,5 +32,19 @@ app.use("/post", PostRoutes)
 app.use("/", (req, res) => {
   res.send("Hello world")
 })
+
+app.get("/hello", (req, res) => {
+  res.status(200).json({ status: "running" });
+});
+
+const serverUrl = process.env.SERVER_URL || "http://localhost:4000";
+cron.schedule("*/10 * * * *", async () => {
+  try {
+    const response = await axios.get(`${serverUrl}/hello`);
+    console.log("Cron job executed:", response.data);
+  } catch (error) {
+    console.error("Cron job failed:", error.message);
+  }
+});
 
 module.exports = app; 
